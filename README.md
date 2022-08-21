@@ -1,1 +1,1 @@
-# Query-Digital-Music-Store-Database Project
+# Query Digital Music Store Database Project
