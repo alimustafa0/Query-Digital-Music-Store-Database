@@ -1,0 +1,65 @@
+//Question 1: What are the most popular 10 playlists that have artists?
+
+SELECT Playlist.PlaylistId, Playlist.Name, Count(*) AS num_of_artists
+FROM Playlist
+JOIN PlaylistTrack
+ON Playlist.PlaylistId = PlaylistTrack.PlaylistId
+JOIN Track
+ON PlaylistTrack.TrackId = Track.TrackId
+JOIN Album
+ON Album.AlbumId = Track.AlbumId
+JOIN Artist
+ON Artist.ArtistId = Album.ArtistId
+GROUP BY Playlist.PlaylistId, Playlist.Name
+ORDER BY num_of_artists DESC
+LIMIT 10;
+
+
+
+
+//Question 2: What are the top 10 artists that use the MPEG audio file type with their counts?
+
+SELECT Artist.Name AS Artist, MediaType.Name AS Media_Type, COUNT(*) AS Count
+FROM Track
+JOIN MediaType
+ON Track.MediaTypeId = MediaType.MediaTypeId
+JOIN Album
+ON Album.AlbumId = Track.AlbumId
+JOIN Artist
+ON Artist.ArtistId = Album.ArtistId
+WHERE Media_Type = 'MPEG audio file'
+GROUP BY MediaType.Name, Artist.Name
+ORDER BY Count DESC
+LIMIT 10;
+
+
+
+//Question 3: What are the total invoices for each genre?
+
+SELECT Genre, MAX(Total_invoices) AS Max_total_invoices
+FROM (SELECT Genre.Name AS Genre, SUM(InvoiceLine.Quantity * InvoiceLine.UnitPrice) AS Total_invoices
+FROM Track
+JOIN Genre
+ON Track.GenreId = Genre.GenreId
+JOIN InvoiceLine
+ON InvoiceLine.TrackId = Track.TrackId
+GROUP BY Genre.Name)
+GROUP BY Genre
+ORDER BY Max_total_invoices DESC
+
+
+
+
+//Question 4: What are the full names of the top 10 customers that listen to the tracks with their total time per minutes?
+
+SELECT Customer.FirstName || ' ' || Customer.LastName AS Full_name, SUM(Track.Milliseconds)/60000 AS Total_minutes
+FROM Track
+JOIN InvoiceLine
+ON InvoiceLine.TrackId = Track.TrackId
+JOIN Invoice
+ON Invoice.InvoiceId = InvoiceLine.InvoiceId
+JOIN Customer
+ON Customer.CustomerId = Invoice.CustomerId
+GROUP BY Customer.CustomerId
+ORDER BY Total_minutes DESC
+LIMIT 10;
