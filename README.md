@@ -1,2 +1,2 @@
 # Query Digital Music Store Database Project
-In the Project We query a Digital Music Store Database, we will be using a new dataset. It will be a music store.
+In this Project We queried the Chinook Database. The Chinook Database holds information about a music store. For this project, We assisted the Chinook team with understanding the media in their store, their customers and employees, and their invoice information.
